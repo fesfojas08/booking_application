@@ -29,7 +29,7 @@ public class Service {
 	@OneToMany(mappedBy="service", cascade=CascadeType.ALL)
 	private List<Image> images;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="reservation_id")
 	@JsonIgnore
 	private Reservation reservation;

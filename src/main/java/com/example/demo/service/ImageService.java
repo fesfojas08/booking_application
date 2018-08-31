@@ -50,15 +50,12 @@ public class ImageService {
 	
 	@Transactional
 	public Image updateById(Image newDetails, int id) {
-		Image image = null;
-		if(imageRepository.existsById(id)) {
-			image = findById(id);
-			if(newDetails.getImageUrl() != null) {
-				image.setImageUrl(newDetails.getImageUrl());
-			}
-			if(newDetails.getDescription() != null) {
-				image.setDescription(newDetails.getDescription());
-			}
+		Image image = findById(id);
+		if(newDetails.getImageUrl() != null) {
+			image.setImageUrl(newDetails.getImageUrl());
+		}
+		if(newDetails.getDescription() != null) {
+			image.setDescription(newDetails.getDescription());
 		}
 		return save(image);
 	}

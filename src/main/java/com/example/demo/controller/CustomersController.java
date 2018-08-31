@@ -25,12 +25,12 @@ public class CustomersController {
 	}
 	
 	@GetMapping
-	public Iterable<Customer> retrieveAllCustomers() {
+	public List<Customer> retrieveAllCustomers() {
 		return customerService.findAll();
 	}
 	
 	@PutMapping
-	public Iterable<Customer> updateMultipleCustomers(@RequestBody List<Customer> customersList) {
+	public List<Customer> updateMultipleCustomers(@RequestBody List<Customer> customersList) {
 		return customerService.updateMultiple(customersList);
 	}
 	

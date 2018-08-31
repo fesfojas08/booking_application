@@ -10,10 +10,13 @@ import com.example.demo.repository.ServiceRepository;
 
 public class TravelService {
 	private ServiceRepository serviceRepository;
+	private TravelPackageService travelPackageService;
 
-	public TravelService(ServiceRepository serviceRepository) {
+	public TravelService(ServiceRepository serviceRepository, 
+			TravelPackageService travelPackageService) {
 		super();
 		this.serviceRepository = serviceRepository;
+		this.travelPackageService = travelPackageService;
 	}
 	
 	@Transactional(readOnly=true)
@@ -55,7 +58,7 @@ public class TravelService {
 			travelService.setServiceName(newDetails.getServiceName());
 		}
 		if(newDetails.getImages() != null) {
-			travelService.setImages(travelService.getImages());
+			travelService.setImages(newDetails.getImages());
 		}
 		if(newDetails.getDescription() != null) {
 			travelService.setDescription(newDetails.getDescription());
@@ -70,5 +73,26 @@ public class TravelService {
 			tempTravelServiceList.add(updateById(service, service.getServiceId()));
 		}
 		return tempTravelServiceList;
+	}
+	
+	@Transactional
+	public List<Service> findAllByTravelPackageId(int travelPackageId) {
+		return (List<Service>) serviceRepository.findAllById(
+				travelPackageService.findAllServiceId(travelPackageId));
+	}
+	
+	@Transactional
+	public List<Service> saveAllByTravelPackageId(int travelPackageId) {
+		return (List<Service>) serviceRepository.saveAll(
+				travelPackageService.findById(travelPackageId).getAvailableServiceList());
+	}
+	
+	@Transactional
+	public void deleteMultipleByTravelPackageId(List<Integer> serviceIdList, 
+			int travelPackageId) {
+		for(Integer serviceId : serviceIdList) {
+			deleteById(serviceId);
+		}
+		travelPackageService.save(travelPackageService.findById(travelPackageId));
 	}
 }

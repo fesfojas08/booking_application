@@ -20,11 +20,11 @@ public class Image {
 	private int imageId;
 	private String description;
 	private String imageUrl;
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JsonIgnore
 	@JoinColumn(name="service_id")
 	private Service service;
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JsonIgnore
 	@JoinColumn(name="travel_package_id")
 	private TravelPackage travelPackage;

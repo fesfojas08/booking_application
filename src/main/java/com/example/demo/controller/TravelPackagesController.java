@@ -25,12 +25,12 @@ public class TravelPackagesController {
 	}
 	
 	@GetMapping
-	public Iterable<TravelPackage> retrieveAllTravelPackages() {
+	public List<TravelPackage> retrieveAllTravelPackages() {
 		return travelPackageService.findAll();
 	}
 	
 	@PutMapping
-	public Iterable<TravelPackage> updateMultipleTravelPackages(@RequestBody List<TravelPackage> travelPackageList) {
+	public List<TravelPackage> updateMultipleTravelPackages(@RequestBody List<TravelPackage> travelPackageList) {
 		return travelPackageService.updateMultiple(travelPackageList);
 	}
 	

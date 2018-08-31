@@ -26,8 +26,9 @@ public class BookingApplicationConfiguration {
 	}
 	
 	@Bean 
-	public TravelService travelService(ServiceRepository serviceRepository) {
-		return new TravelService(serviceRepository);
+	public TravelService travelService(ServiceRepository serviceRepository, 
+			TravelPackageService travelPackageService) {
+		return new TravelService(serviceRepository, travelPackageService);
 	}
 	
 	@Bean
