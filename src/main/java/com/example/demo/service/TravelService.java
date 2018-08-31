@@ -5,18 +5,15 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.model.Image;
 import com.example.demo.model.Service;
 import com.example.demo.repository.ServiceRepository;
 
 public class TravelService {
 	private ServiceRepository serviceRepository;
-	private ImageService imageService;
 
-	public TravelService(ServiceRepository serviceRepository, ImageService imageService) {
+	public TravelService(ServiceRepository serviceRepository) {
 		super();
 		this.serviceRepository = serviceRepository;
-		this.imageService = imageService;
 	}
 	
 	@Transactional(readOnly=true)
@@ -31,15 +28,11 @@ public class TravelService {
 	
 	@Transactional
 	public Service save(Service service) {
-		saveServiceImage(service);
 		return serviceRepository.save(service);
 	}
 	
 	@Transactional
 	public List<Service> saveMultiple(List<Service> serviceList) {
-		for(Service service : serviceList) {
-			saveServiceImage(service);
-		}
 		return (List<Service>) serviceRepository.saveAll(serviceList);
 	}
 	
@@ -52,34 +45,20 @@ public class TravelService {
 	
 	@Transactional
 	public void deleteById(int id) {
-		Service service = findById(id);
-		// delete images referenced by this ID
-		imageService.deleteMultiple(service.getImages());
 		serviceRepository.deleteById(id);
 	}
 	
 	@Transactional
-	public void saveServiceImage(Service service) {
-		if(service.getImages() != null) {
-			for(Image image : service.getImages()) {
-				image.setService(service);
-				imageService.save(image);
-			}
-		}
-	}
-	
-	@Transactional
 	public Service updateById(Service newDetails, int id) {
-		Service travelService = null;
-		if(serviceRepository.existsById(id)) {
-			travelService = findById(id);
-			imageService.updateMultiple(newDetails.getImages());
-			if(newDetails.getServiceName() != null) {
-				travelService.setServiceName(newDetails.getServiceName());
-			}
-			if(newDetails.getDescription() != null) {
-				travelService.setDescription(newDetails.getDescription());
-			}
+		Service travelService = findById(id);
+		if(newDetails.getServiceName() != null) {
+			travelService.setServiceName(newDetails.getServiceName());
+		}
+		if(newDetails.getImages() != null) {
+			travelService.setImages(travelService.getImages());
+		}
+		if(newDetails.getDescription() != null) {
+			travelService.setDescription(newDetails.getDescription());
 		}
 		return save(travelService);
 	}

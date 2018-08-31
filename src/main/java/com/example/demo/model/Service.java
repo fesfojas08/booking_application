@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,10 +26,10 @@ public class Service {
 	private String serviceName;
 	private String description;
 	
-	@OneToMany(mappedBy="service")
+	@OneToMany(mappedBy="service", cascade=CascadeType.ALL)
 	private List<Image> images;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="reservation_id")
 	@JsonIgnore
 	private Reservation reservation;
@@ -82,5 +85,23 @@ public class Service {
 	}
 	public void setTravelPackage(TravelPackage travelPackage) {
 		this.travelPackage = travelPackage;
+	}
+
+	@PrePersist
+	public void saveRelationships() {
+		createRelationships();
+	}
+	
+	@PreUpdate
+	public void updateRelationships() {
+		createRelationships();
+	}
+	
+	private void createRelationships() {
+		if(this.images != null) {
+			for(Image image : this.images) {
+				image.setService(this);
+			}
+		}
 	}
 }
