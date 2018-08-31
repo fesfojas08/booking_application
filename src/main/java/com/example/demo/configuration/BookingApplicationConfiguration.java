@@ -9,7 +9,7 @@ import com.example.demo.repository.ServiceRepository;
 import com.example.demo.repository.TravelPackageRepository;
 import com.example.demo.service.CustomerService;
 import com.example.demo.service.ImageService;
-import com.example.demo.service.ServiceService;
+import com.example.demo.service.TravelService;
 import com.example.demo.service.TravelPackageService;
 
 @Configuration
@@ -26,14 +26,14 @@ public class BookingApplicationConfiguration {
 	}
 	
 	@Bean 
-	public ServiceService serviceService(ServiceRepository serviceRepository, 
+	public TravelService travelService(ServiceRepository serviceRepository, 
 			ImageService imageService) {
-		return new ServiceService(serviceRepository, imageService);
+		return new TravelService(serviceRepository, imageService);
 	}
 	
 	@Bean
 	public TravelPackageService travelPackageService(TravelPackageRepository travelPackageRepository,
-			ServiceService serviceService, ImageService imageService) {
-		return new TravelPackageService(travelPackageRepository, serviceService, imageService);
+			TravelService travelService, ImageService imageService) {
+		return new TravelPackageService(travelPackageRepository, travelService, imageService);
 	}
 }

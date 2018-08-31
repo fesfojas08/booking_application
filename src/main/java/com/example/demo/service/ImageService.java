@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -34,16 +35,40 @@ public class ImageService {
 	public List<Image> saveMultiple(List<Image> imageList) {
 		return (List<Image>) imageRepository.saveAll(imageList);
 	}
-	
+
 	@Transactional
-	public void deleteMultiple(List<Integer> imageIdList) {
-		for(Integer imageId : imageIdList) {
-			deleteById(imageId);
+	public void deleteMultiple(List<Image> imageList) {
+		for(Image image : imageList) {
+			deleteById(image.getImageId());
 		}
 	}
 	
 	@Transactional
 	public void deleteById(int id) {
 		imageRepository.deleteById(id);
+	}
+	
+	@Transactional
+	public Image updateById(Image newDetails, int id) {
+		Image image = null;
+		if(imageRepository.existsById(id)) {
+			image = findById(id);
+			if(newDetails.getImageUrl() != null) {
+				image.setImageUrl(newDetails.getImageUrl());
+			}
+			if(newDetails.getDescription() != null) {
+				image.setDescription(newDetails.getDescription());
+			}
+		}
+		return save(image);
+	}
+	
+	@Transactional
+	public List<Image> updateMultiple(List<Image> imageList) {
+		List<Image> tempImageList = new ArrayList<Image>();
+		for(Image image : imageList) {
+			tempImageList.add(updateById(image, image.getImageId()));
+		}
+		return tempImageList;
 	}
 }

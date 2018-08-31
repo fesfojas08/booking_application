@@ -37,7 +37,7 @@ public class CustomerService {
 	}
 	
 	@Transactional
-	public List<Customer> update(List<Customer> customersList) {
+	public List<Customer> updateMultiple(List<Customer> customersList) {
 		List<Customer> tempCustomersList = new ArrayList<Customer>();
 		for(Customer customer : customersList) {
 			tempCustomersList.add(updateById(customer, customer.getCustomerId()));

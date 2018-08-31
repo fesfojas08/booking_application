@@ -31,7 +31,7 @@ public class TravelPackagesController {
 	
 	@PutMapping
 	public Iterable<TravelPackage> updateMultipleTravelPackages(@RequestBody List<TravelPackage> travelPackageList) {
-		return travelPackageService.update(travelPackageList);
+		return travelPackageService.updateMultiple(travelPackageList);
 	}
 	
 	@PostMapping

@@ -31,7 +31,7 @@ public class CustomersController {
 	
 	@PutMapping
 	public Iterable<Customer> updateMultipleCustomers(@RequestBody List<Customer> customersList) {
-		return customerService.update(customersList);
+		return customerService.updateMultiple(customersList);
 	}
 	
 	@PostMapping
